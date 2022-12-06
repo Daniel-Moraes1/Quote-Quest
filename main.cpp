@@ -10,7 +10,8 @@ int main()
 {
 	AdjacencyList list;
 	list.insertData();
-	list.generateEdges();
+    //list.generateEdges();
+    list.readEdges("graph.txt");
 
 	return 0;
 }

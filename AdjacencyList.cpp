@@ -3,11 +3,15 @@
 #include <sstream>
 #include <stack>
 #include <set>
+#include <queue>
+
 #include<iostream> // Delete me
 
 #include "AdjacencyList.h"
 
-AdjacencyList::AdjacencyList() {}
+AdjacencyList::AdjacencyList() {
+    similarity_factor = 0.005;
+}
 
 
 void AdjacencyList::insertData()
@@ -53,16 +57,17 @@ void AdjacencyList::insertData()
             } else {
                 category = temp.substr(0, temp.find(','));
             }
-            std::cout << category << std::endl;
             // Create Quote objects and assign index in quotes map
-            Quote *q = new Quote(std::stof(sentimentVal), std::stoi(length), quote, category, author);
+            Quote *q = new Quote(std::stof(sentimentVal), std::stoi(length), quote, category, author, index);
             quotes[index] = q;
             index++;
         }
     }
     // Create empty Adjacency List
+    std::cout<<quotes.size();
     adjacency_list = std::vector<std::unordered_set<int>> (quotes.size());
 }
+
 
 /*
 Establish edge weights between vertices
@@ -70,13 +75,13 @@ Factors include:
     Differences in sentiment(abs(sentiment(1) - sentiment(2))
     Different categories?: +.25
     Length difference: (max(length1, length2) - min(length1, length2)) / (max(length1, length2) / reduction_factor = 10)
- */
+*/
 
+// Only add quotes to adjacency list if their similarity is <= similarity_factor
 void AdjacencyList::generateEdges() {
-    float similarity_factor = 0.001; // Only add quotes to adjacency list if their similarity is <= similarity_factor
-    for (int i=0; i<1; i++) {
+    for (int i=0; i<quotes.size(); i++) {
         // Just to check progress
-        if(i % 1000 == 0) {
+        if(i % 250 == 0) {
             std::cout<<i<<std::endl;
         }
         for(int j=0; j<quotes.size(); j++) {
@@ -87,30 +92,67 @@ void AdjacencyList::generateEdges() {
         }
     }
 
-    for (auto it = adjacency_list[0].begin(); it != adjacency_list[0].end(); it++) {
-        std::cout<<*it;
+    std::ofstream outFile("graph.txt");
+    for (int i=0; i<adjacency_list.size(); i++) {
+        outFile<<std::endl;
+        if (adjacency_list[i].size() == 0)
+            outFile<<-1;
+        else {
+            for (auto it = adjacency_list[i].begin(); it != adjacency_list[i].end(); it++) {
+                outFile<<*it<<" ";
+            }
+        }
+    }
+    outFile.close();
+}
+
+void AdjacencyList::readEdges(std::string in) {
+    std::ifstream graph(in);
+    if(graph.is_open()) {
+        int index(0);
+        std::string line;
+        std::string connection;
+        while (getline(graph, line)) {
+            std::istringstream stream(line);
+            getline(stream, connection, ' ');
+            std::cout<<connection;
+            adjacency_list[index].insert(std::stoi(connection));
+        }
     }
 }
 
-std::stack<Quote*> AdjacencyList::BFS(Quote* source, bool within_category) {
+std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
     std::stack<Quote*> stack;
+    std::queue<int> queue;
+    int source_index = source->getIndex();
+    queue.push(source_index);
+    std::unordered_set<int> visited;
+    visited.insert(source_index);
+    while(!queue.empty()) {
+        int cur = queue.front();
+        queue.pop();
+        for (auto it = adjacency_list[cur].begin(); it != adjacency_list[cur].end(); it++) {
+            if (visited.count(*it) == 0) {
+                queue.push(*it);
+                stack.push(quotes[*it]);
+                visited.insert(*it);
+            }
+        }
+    }
     return stack;
 }
 
-std::stack<Quote*> AdjacencyList::DFS(Quote* source, bool within_category) {
+std::stack<Quote*> AdjacencyList::DFS(Quote* source) {
+    int source_index = source->getIndex();
     // Implement DFS with stack
-    std::set<Quote*> visited;
-    std::stack<Quote*> stack;
-    if (source != nullptr) {
-        stack.push(source);
+    std::unordered_set<int> visited;
+    std::stack<int> dfs_stack;
+    std::stack<Quote*> return_stack;
+    dfs_stack.push(source_index);
+    while(!dfs_stack.empty()) {
+        dfs_stack.pop();
     }
-    while(!stack.empty()) {
-
-    }
-    return stack;
-
-
-
+    return return_stack;
 }
 
 AdjacencyList::~AdjacencyList() {

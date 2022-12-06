@@ -8,15 +8,17 @@ Quote::Quote()
 	this->quote = "";
 	this->category = "";
 	this->author = "";
+    this->index = 0;
 }
 
-Quote::Quote(float sentimentVal, int length, std::string quote, std::string category, std::string author)
+Quote::Quote(float sentimentVal, int length, std::string quote, std::string category, std::string author, int index)
 {
 	this->sentimentVal = sentimentVal;
 	this->length = length;
 	this->quote = quote;
 	this->category = category;
 	this->author = author;
+    this->index = index;
 }
 
 float Quote::getSentimentVal()
@@ -45,6 +47,10 @@ std::string Quote::getAuthor()
 	return this->author;
 }
 
+int Quote::getIndex() {
+    return this->index;
+}
+
 float Quote::calculateSimilarity(Quote *q2) {
     //If the quotes are the same, similarity is 0 (perfect)
     if (q2 == this)
@@ -57,13 +63,30 @@ float Quote::calculateSimilarity(Quote *q2) {
 
     //Category
     if (this->getCategory() != q2->getCategory()) {
-        similarity += 0.25;
+        similarity += 0.0048; // Must be low enough to jump between categories if sentiments are close enough
     }
 
     //Length
     float l1(this->getLength()); float l2(q2->getLength());
-    float length_reduction_factor = 7.0; // Chosen to ensure similarity is not too heavily impacted by length
+    float length_reduction_factor = 10.0; // Chosen to ensure similarity is not too heavily impacted by length
     similarity += ((std::max(l1, l2) - std::min(l1, l2))/(std::max(l1, l2)*length_reduction_factor));
 
     return similarity;
+}
+
+
+/* OUTPUT FORMAT (all strings)
+ * [0] QUOTE
+ * [1] AUTHOR
+ * [2] CATEGORY: (one of) love, life, inspirational, philosophy, humor, god, truth, wisdom, happiness, hope, hate
+ * [3] SENTIMENT (-1, 1)
+ * [4] LENGTH (in characters)
+*/
+std::vector<std::string> Quote::getQuote(Quote* quote) {
+    std::vector<std::string> output = {quote->getQuote(),
+                                       quote->getAuthor(),
+                                       quote->getCategory(),
+                                       std::to_string(quote->getSentimentVal()),
+                                       std::to_string(quote->getLength())};
+    return output;
 }
