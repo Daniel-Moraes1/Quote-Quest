@@ -56,34 +56,52 @@ void AdjacencyMatrix::insertData()
             }
 
             // Create Quote objects and assign index in order map
-            Quote *q = new Quote(std::stod(sentimentVal), std::stoi(length), quote, category, author);
+            Quote *q = new Quote(std::stof(sentimentVal), std::stoi(length), quote, category, author);
             order[index] = q;
+            index++;
         }
     }
     // Create empty adjacency matrix
-    adjacency_matrix =  std::vector<std::vector<float>> (order.size(), std::vector<float> (order.size(), 0));
+    std::cout<<order.size()<<std::endl;
+    adjacency_list =  std::vector<std::map<int, float>> (order.size());
+    std::cout<<adjacency_list.size()<<std::endl;
 }
-
-// Establish edge weights between vertices as difference in sentiment values
+/*
+Establish edge weights between vertices
+Factors include:
+    Differences in sentiment(abs(sentiment(1) - sentiment(2))
+    Different categories?: +.25
+    Length difference: (max(length1, length2) - min(length1, length2)) / (max(length1, length2) / reduction_factor = 10)
+ */
 void AdjacencyMatrix::generateEdges() {
-    for (int i=0; i<adjacency_matrix.size(); i++) {
-        for(int j=0; j<adjacency_matrix.size(); j++) {
-            if (i!=j)
-                adjacency_matrix[i][j] = order[j]->getSentimentVal() - order[i]->getSentimentVal(); // Maybe make this abs
-            else
-                adjacency_matrix[i][j] = -2; // Need a way to mark as null
+    float similarity_factor = 0.0001; // Only add quotes to adjacency list if their similarity is <= similarity_factor
+    //int count(0);
+    //int total(0);
+    for (int i=0; i<order.size(); i++) {
+        if(i % 10000 == 0) {
+            std::cout<<i<<std::endl;
+        }
+        for(int j=0; j<order.size(); j++) {
+            //total++;
+            float similarity = order[i]->calculateSimilarity(order[j]);
+            if (similarity <= similarity_factor && similarity != 0) {
+                adjacency_list[i][j] = similarity;
+                //std::cout<<++count<<" "<<total<<std::endl;
+            }
         }
     }
-    for (int i=0; i<100; i++) {
-        std::cout<<adjacency_matrix[0][i]<<std::endl;
-    }
+    /*
+    for (auto it = adjacency_list[0].begin(); it != adjacency_list[0].end(); it++) {
+        std::cout<<it->first<<" "<<it->second<<std::endl;
+    }*/
 }
 
-void AdjacencyMatrix::BFS(Quote* source, bool within_category) {
-
+std::stack<Quote*> AdjacencyMatrix::BFS(Quote* source, bool within_category) {
+    std::stack<Quote*> stack;
+    return stack;
 }
 
-void AdjacencyMatrix::DFS(Quote* source, bool within_category) {
+std::stack<Quote*> AdjacencyMatrix::DFS(Quote* source, bool within_category) {
     // Implement DFS with stack
     std::set<Quote*> visited;
     std::stack<Quote*> stack;
@@ -93,6 +111,7 @@ void AdjacencyMatrix::DFS(Quote* source, bool within_category) {
     while(!stack.empty()) {
 
     }
+    return stack;
 
 
 
