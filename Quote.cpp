@@ -19,7 +19,7 @@ Quote::Quote(int sentimentVal, int length, std::string quote, std::string catego
 	this->author = author;
 }
 
-int Quote::getSentimentVal()
+float Quote::getSentimentVal()
 {
 	return this->sentimentVal;
 }

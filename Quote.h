@@ -1,19 +1,20 @@
 #pragma once
 #include <string>
+#include <vector>
 
 class Quote
 {
 private:
-	int sentimentVal;
+	float sentimentVal;
 	int length;
 	std::string quote;
-	std::string category;
 	std::string author;
+    std::string category;
 
 public:
 	Quote();
 	Quote(int sentimentVal, int length, std::string quote, std::string category, std::string author);
-	int getSentimentVal();
+	float getSentimentVal();
 	int getLength();
 	std::string getQuote();
 	std::string getCategory();
