@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include <set>
+#include <unordered_set>
 #include <stack>
 #include <vector>
 #include "Quote.h"
@@ -9,8 +9,8 @@
 class AdjacencyList
 {
 private:
-    std::map<int, Quote*> order;
-    std::vector<std::set<int>> adjacency_list;
+    std::map<int, Quote*> quotes;
+    std::vector<std::unordered_set<int>> adjacency_list; // Storing indices of values allows us to store graph externally
 public:
     AdjacencyList();
     ~AdjacencyList();

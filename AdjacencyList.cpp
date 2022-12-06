@@ -54,16 +54,14 @@ void AdjacencyList::insertData()
                 category = temp.substr(0, temp.find(','));
             }
             std::cout << category << std::endl;
-            // Create Quote objects and assign index in order map
+            // Create Quote objects and assign index in quotes map
             Quote *q = new Quote(std::stof(sentimentVal), std::stoi(length), quote, category, author);
-            order[index] = q;
+            quotes[index] = q;
             index++;
         }
     }
-    // Create empty adjacency List
-    std::cout<<order.size()<<std::endl;
-    adjacency_list =  std::vector<std::set<int>> (order.size());
-    std::cout<<adjacency_list.size()<<std::endl;
+    // Create empty Adjacency List
+    adjacency_list = std::vector<std::unordered_set<int>> (quotes.size());
 }
 
 /*
@@ -73,15 +71,16 @@ Factors include:
     Different categories?: +.25
     Length difference: (max(length1, length2) - min(length1, length2)) / (max(length1, length2) / reduction_factor = 10)
  */
-void AdjacencyMatrix::generateEdges() {
+
+void AdjacencyList::generateEdges() {
     float similarity_factor = 0.001; // Only add quotes to adjacency list if their similarity is <= similarity_factor
     for (int i=0; i<1; i++) {
         // Just to check progress
         if(i % 1000 == 0) {
             std::cout<<i<<std::endl;
         }
-        for(int j=0; j<order.size(); j++) {
-            float similarity = order[i]->calculateSimilarity(order[j]);
+        for(int j=0; j<quotes.size(); j++) {
+            float similarity = quotes[i]->calculateSimilarity(quotes[j]);
             if (similarity <= similarity_factor && similarity != 0) {
                 adjacency_list[i].insert(j);
             }
@@ -116,7 +115,7 @@ std::stack<Quote*> AdjacencyList::DFS(Quote* source, bool within_category) {
 
 AdjacencyList::~AdjacencyList() {
     // Delete all quote objects from the adjacency List
-    for (auto it = order.begin(); it != order.end(); it++) {
+    for (auto it = quotes.begin(); it != quotes.end(); it++) {
         delete it->second;
     }
 }
