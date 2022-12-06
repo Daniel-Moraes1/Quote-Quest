@@ -4,13 +4,13 @@
 #include <iostream>
 
 #include "Quote.h"
-#include "AdjacencyMatrix.h"
+#include "AdjacencyList.h"
 
 int main()
 {
-	AdjacencyMatrix matrix;
-	matrix.insertData();
-    matrix.generateEdges();
+	AdjacencyList list;
+	list.insertData();
+	list.generateEdges();
 
 	return 0;
 }

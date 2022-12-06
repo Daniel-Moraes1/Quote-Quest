@@ -5,13 +5,12 @@
 #include <set>
 #include<iostream> // Delete me
 
-#include "AdjacencyMatrix.h"
+#include "AdjacencyList.h"
+
+AdjacencyList::AdjacencyList() {}
 
 
-AdjacencyMatrix::AdjacencyMatrix() {}
-
-
-void AdjacencyMatrix::insertData()
+void AdjacencyList::insertData()
 {
     std::ifstream inFile("data.csv");
     std::string num;
@@ -50,18 +49,18 @@ void AdjacencyMatrix::insertData()
             }
 
             if (temp[0] == '"') {
-                category = temp.substr(1, temp.length() - 2);
+                category = temp.substr(1, temp.find(',') - 1);
             } else {
                 category = temp.substr(0, temp.find(','));
             }
-
+            std::cout << category << std::endl;
             // Create Quote objects and assign index in order map
             Quote *q = new Quote(std::stof(sentimentVal), std::stoi(length), quote, category, author);
             order[index] = q;
             index++;
         }
     }
-    // Create empty adjacency matrix
+    // Create empty adjacency List
     std::cout<<order.size()<<std::endl;
     adjacency_list =  std::vector<std::set<int>> (order.size());
     std::cout<<adjacency_list.size()<<std::endl;
@@ -94,12 +93,12 @@ void AdjacencyMatrix::generateEdges() {
     }
 }
 
-std::stack<Quote*> AdjacencyMatrix::BFS(Quote* source, bool within_category) {
+std::stack<Quote*> AdjacencyList::BFS(Quote* source, bool within_category) {
     std::stack<Quote*> stack;
     return stack;
 }
 
-std::stack<Quote*> AdjacencyMatrix::DFS(Quote* source, bool within_category) {
+std::stack<Quote*> AdjacencyList::DFS(Quote* source, bool within_category) {
     // Implement DFS with stack
     std::set<Quote*> visited;
     std::stack<Quote*> stack;
@@ -115,10 +114,9 @@ std::stack<Quote*> AdjacencyMatrix::DFS(Quote* source, bool within_category) {
 
 }
 
-AdjacencyMatrix::~AdjacencyMatrix() {
-    // Delete all quote objects from the adjacency matrix
+AdjacencyList::~AdjacencyList() {
+    // Delete all quote objects from the adjacency List
     for (auto it = order.begin(); it != order.end(); it++) {
         delete it->second;
     }
 }
-
