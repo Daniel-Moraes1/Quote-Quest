@@ -114,11 +114,18 @@ void AdjacencyList::readEdges(std::string in) {
         std::string connection;
         while (getline(graph, line)) {
             std::istringstream stream(line);
-            getline(stream, connection, ' ');
-            std::cout<<connection;
-            adjacency_list[index].insert(std::stoi(connection));
+            while (getline(stream, connection, ' ')) {
+                int destination = std::stoi(connection);
+                if (destination == -1) {
+                    continue;
+                }
+                adjacency_list[index].insert(std::stoi(connection));
+            }
+            index++;
         }
     }
+    graph.close();
+    std::cout<<std::endl<<adjacency_list[adjacency_list.size()-1].size();
 }
 
 std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
