@@ -63,9 +63,10 @@ void AdjacencyMatrix::insertData()
     }
     // Create empty adjacency matrix
     std::cout<<order.size()<<std::endl;
-    adjacency_list =  std::vector<std::map<int, float>> (order.size());
+    adjacency_list =  std::vector<std::set<int>> (order.size());
     std::cout<<adjacency_list.size()<<std::endl;
 }
+
 /*
 Establish edge weights between vertices
 Factors include:
@@ -74,26 +75,23 @@ Factors include:
     Length difference: (max(length1, length2) - min(length1, length2)) / (max(length1, length2) / reduction_factor = 10)
  */
 void AdjacencyMatrix::generateEdges() {
-    float similarity_factor = 0.0001; // Only add quotes to adjacency list if their similarity is <= similarity_factor
-    //int count(0);
-    //int total(0);
-    for (int i=0; i<order.size(); i++) {
-        if(i % 10000 == 0) {
+    float similarity_factor = 0.001; // Only add quotes to adjacency list if their similarity is <= similarity_factor
+    for (int i=0; i<1; i++) {
+        // Just to check progress
+        if(i % 1000 == 0) {
             std::cout<<i<<std::endl;
         }
         for(int j=0; j<order.size(); j++) {
-            //total++;
             float similarity = order[i]->calculateSimilarity(order[j]);
             if (similarity <= similarity_factor && similarity != 0) {
-                adjacency_list[i][j] = similarity;
-                //std::cout<<++count<<" "<<total<<std::endl;
+                adjacency_list[i].insert(j);
             }
         }
     }
-    /*
+
     for (auto it = adjacency_list[0].begin(); it != adjacency_list[0].end(); it++) {
-        std::cout<<it->first<<" "<<it->second<<std::endl;
-    }*/
+        std::cout<<*it;
+    }
 }
 
 std::stack<Quote*> AdjacencyMatrix::BFS(Quote* source, bool within_category) {

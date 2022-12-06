@@ -1,14 +1,16 @@
 #pragma once
 #include <map>
+#include <set>
 #include <stack>
 #include <vector>
 #include "Quote.h"
+
 
 class AdjacencyMatrix
 {
 private:
     std::map<int, Quote*> order;
-    std::vector<std::map<int, float>> adjacency_list;
+    std::vector<std::set<int>> adjacency_list;
 public:
     AdjacencyMatrix();
     ~AdjacencyMatrix();
