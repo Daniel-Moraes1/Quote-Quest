@@ -176,7 +176,7 @@ Quote* AdjacencyList::generateQuote(float sentiment, std::string category, int l
     int min_index = 0;
     for (int i=0; i<quotes.size(); i++) {
         float val = tempQuote.calculateSimilarity(quotes[i]);
-        if (val < min) {
+        if (quotes[i]->getCategory() == category && val < min) {
             min = val;
             min_index = i;
         }
