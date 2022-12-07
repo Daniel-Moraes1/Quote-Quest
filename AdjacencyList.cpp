@@ -129,9 +129,10 @@ void AdjacencyList::readEdges(std::string in) {
 std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
     std::stack<Quote*> stack;
     std::queue<int> queue;
-    int source_index = source->getIndex();
-    queue.push(source_index);
     std::unordered_set<int> visited;
+    int source_index = source->getIndex();
+
+    queue.push(source_index);
     visited.insert(source_index);
     while(!queue.empty()) {
         int cur = queue.front();
@@ -148,14 +149,25 @@ std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
 }
 
 std::stack<Quote*> AdjacencyList::DFS(Quote* source) {
-    int source_index = source->getIndex();
     // Implement DFS with stack
     std::unordered_set<int> visited;
     std::stack<int> dfs_stack;
     std::stack<Quote*> return_stack;
+    int source_index = source->getIndex();
+    
     dfs_stack.push(source_index);
+    visited.insert(source_index);
     while(!dfs_stack.empty()) {
+        int cur = dfs_stack.top();
         dfs_stack.pop();
+        for(auto it = adjacency_list[cur].begin(); it != adjacency_list[cur].end(); it++)
+        {
+            if(visited.count(*it) == 0) {
+                dfs_stack.push(*it);
+                return_stack.push(quotes[*it]);
+                visited.insert(*it);
+            }
+        }
     }
     return return_stack;
 }
