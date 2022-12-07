@@ -9,6 +9,8 @@ int main()
 {
 	AdjacencyList list;
 	list.insertData();
+	std::cout << "Loading quote quotient..." << std::endl;
+	std::cout << std::endl;
 	list.readEdges("graph.txt");
 	int input;
 	float sentimentVal;
