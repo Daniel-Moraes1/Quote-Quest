@@ -4,16 +4,14 @@
 #include <stack>
 #include <set>
 #include <queue>
-
 #include<iostream> // To check progress when creating edges
-
 #include "AdjacencyList.h"
 
 AdjacencyList::AdjacencyList() {
-    similarity_factor = 0.02;
+    similarity_factor = 0.02; // Decided through rigorous and math intensive testing
 }
 
-
+// Reads data from CSV file. We recommend reading from graph.txt, the outputted in this function, if available
 void AdjacencyList::insertData()
 {
     std::ifstream inFile("data.csv");
