@@ -11,6 +11,7 @@ int main()
 	list.insertData();
 	std::cout << "loading quote quotionet" << std::endl;
 	std::cout << std::endl;
+	// reads in graph via text file to avoid having to insert into graph each time program is run
 	list.readEdges("graph.txt");
 	int input;
 	float sentimentVal;
@@ -18,6 +19,7 @@ int main()
 
 	while (true)
 	{
+		// Creates user interface
 		std::cout << "Welcome to \"Quote Quest\"!" << std::endl;
 		std::cout << "----------------------------------------------!" << std::endl;
 		std::cout << "Please enter a number for your desired initial category:" << std::endl;
@@ -101,9 +103,12 @@ int main()
 			std::stack<Quote*> stack;
 			if (input == 1)
 			{
+				// set start to the current time DFS starts to run
 				auto start = std::chrono::high_resolution_clock::now();
 				stack = list.BFS(quote);
+				// sets stop to the current time DFS ends
 				auto stop = std::chrono::high_resolution_clock::now();
+				// calculates the duration of the DFS method
 				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 				std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
 				std::cout << std::endl;
@@ -114,6 +119,7 @@ int main()
 				std::cout << std::endl;
 				stack.pop();
 
+				// while loop to run throughout the whole stack containing our quotes stored via BFS
 				while (!stack.empty())
 				{
 					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
@@ -136,10 +142,13 @@ int main()
 			}
 			else if (input == 2)
 			{
-				auto start = std::chrono::high_resolution_clock::now();
+				// set start to the current time DFS starts to run
+				auto start = std::chrono::high_resolution_clock::now(); 
 				stack = list.DFS(quote);
-				auto stop = std::chrono::high_resolution_clock::now();
-				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+				// sets stop to the current time DFS ends
+				auto stop = std::chrono::high_resolution_clock::now(); 
+				// calculates the duration of the DFS method
+				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); 
 				std::cout << "The time it took for a DFS to complete was " << duration.count() << " microseconds" << std::endl;
 				std::cout << std::endl;
 				quote = stack.top();
@@ -149,6 +158,7 @@ int main()
 				std::cout << std::endl;
 				stack.pop();
 
+				// while loop to run throughout the whole stack containing our quotes stored via DFS
 				while (!stack.empty())
 				{
 					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;

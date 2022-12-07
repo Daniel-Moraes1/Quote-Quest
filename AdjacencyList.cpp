@@ -1,10 +1,8 @@
-#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <stack>
 #include <set>
 #include <queue>
-#include<iostream> // To check progress when creating edges
 #include "AdjacencyList.h"
 
 AdjacencyList::AdjacencyList() {
@@ -77,10 +75,6 @@ Factors include:
 // Only add quotes to adjacency list if their similarity is <= similarity_factor
 void AdjacencyList::generateEdges() {
     for (int i=0; i<quotes.size(); i++) {
-        // Just to check progress
-        if(i % 250 == 0) {
-            std::cout<<i<<std::endl;
-        }
         for(int j=0; j<quotes.size(); j++) {
             float similarity = quotes[i]->calculateSimilarity(quotes[j]);
             if (similarity <= similarity_factor && similarity != 0) {
@@ -89,6 +83,7 @@ void AdjacencyList::generateEdges() {
         }
     }
 
+    // stores graph in a text file
     std::ofstream outFile("graph.txt");
     for (int i=0; i<adjacency_list.size(); i++) {
         outFile<<std::endl;
@@ -103,6 +98,7 @@ void AdjacencyList::generateEdges() {
     outFile.close();
 }
 
+// reads in the graph text file and converts it back into a graph storable in our adjacency list
 void AdjacencyList::readEdges(std::string in) {
     std::ifstream graph(in);
     if(graph.is_open()) {
@@ -124,6 +120,7 @@ void AdjacencyList::readEdges(std::string in) {
     graph.close();
 }
 
+// BFS function that returns a stack of quotes found via BFS
 std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
     std::stack<Quote*> stack;
     std::queue<int> queue;
@@ -146,8 +143,8 @@ std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
     return stack;
 }
 
+// DFS function that returns a stack of quotes found via DFS
 std::stack<Quote*> AdjacencyList::DFS(Quote* source) {
-    // Implement DFS with stack
     std::unordered_set<int> visited;
     std::stack<int> dfs_stack;
     std::stack<Quote*> return_stack;
@@ -170,6 +167,7 @@ std::stack<Quote*> AdjacencyList::DFS(Quote* source) {
     return return_stack;
 }
 
+// generates a quote given a sentiment and category
 Quote* AdjacencyList::generateQuote(float sentiment, std::string category, int length) {
     Quote tempQuote = Quote(sentiment, length, "", category, "", -1);
     float min = 5; // Arbitrary value greater than possible from dataset
