@@ -70,9 +70,37 @@ int main()
 	std::cin >> sentimentVal;
 
 	Quote* quote = list.generateQuote(sentimentVal, category);
-	std::cout << quote->getQuote() << std::endl;
-	std::stack<Quote*> temp;
+	std::cout <<  "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+	std::cout << "by: " << quote->getAuthor() << std::endl;
 
+	std::cout << "Please enter preferred method of quote generation (enter 1 or 2)" << std::endl;
+	std::cout << "1) BFS" << std::endl;
+	std::cout << "2) DFS" << std::endl;
+	std::cin >> input;
+
+	std::stack<Quote*> stack;
+	if (input == 1)
+	{
+		auto start = std::chrono::high_resolution_clock::now();
+		stack = list.BFS(quote);
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+		std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
+		quote = stack.top();
+		std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+		std::cout << "by: " << quote->getAuthor() << std::endl;
+	}
+	if (input == 2)
+	{
+		auto start = std::chrono::high_resolution_clock::now();
+		stack = list.DFS(quote);
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+		std::cout << "The time it took for a DFS to complete was " << duration.count() << " microseconds" << std::endl;
+		quote = stack.top();
+		std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+		std::cout << "by: " << quote->getAuthor() << std::endl;
+	}
 	
 	
 	return 0;
