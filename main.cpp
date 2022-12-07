@@ -16,7 +16,7 @@ int main()
 
 	std::cout << "Welcome to \"Quote Quest\"!" << std::endl;
 	std::cout << "----------------------------------------------!" << std::endl;
-	std::cout << "Please enter a number for your desired category:" << std::endl;
+	std::cout << "Please enter a number for your desired initial category:" << std::endl;
 	std::cout << "1) Love" << std::endl;
 	std::cout << "2) Life" << std::endl;
 	std::cout << "3) Inspiration" << std::endl;
@@ -70,10 +70,12 @@ int main()
 	std::cin >> sentimentVal;
 
 	Quote* quote = list.generateQuote(sentimentVal, category);
-	std::cout <<  "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+	std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+	std::cout << "Category: " << quote->getCategory() << std::endl;
 	std::cout << "by: " << quote->getAuthor() << std::endl;
+	std::cout << std::endl;
 
-	std::cout << "Please enter preferred method of quote generation (enter 1 or 2)" << std::endl;
+	std::cout << "Please enter preferred method of related quote generation (enter 1 or 2)" << std::endl;
 	std::cout << "1) BFS" << std::endl;
 	std::cout << "2) DFS" << std::endl;
 	std::cin >> input;
@@ -86,22 +88,68 @@ int main()
 		auto stop = std::chrono::high_resolution_clock::now();
 		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 		std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
+		std::cout << std::endl;
 		quote = stack.top();
 		std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+		std::cout << "Category: " << quote->getCategory() << std::endl;
 		std::cout << "by: " << quote->getAuthor() << std::endl;
+		std::cout << std::endl;
+		stack.pop();
+
+		while (!stack.empty())
+		{
+			std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
+			std::cin >> input;
+
+			if (input == 1)
+			{
+				quote = stack.top();
+				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+				std::cout << "Category: " << quote->getCategory() << std::endl;
+				std::cout << "by: " << quote->getAuthor() << std::endl;
+				std::cout << std::endl;
+				stack.pop();
+			}
+			else if (input == 2)
+			{
+				exit(0);
+			}
+		}
 	}
-	if (input == 2)
+	else if (input == 2)
 	{
 		auto start = std::chrono::high_resolution_clock::now();
 		stack = list.DFS(quote);
 		auto stop = std::chrono::high_resolution_clock::now();
 		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 		std::cout << "The time it took for a DFS to complete was " << duration.count() << " microseconds" << std::endl;
+		std::cout << std::endl;
 		quote = stack.top();
 		std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+		std::cout << "Category: " << quote->getCategory() << std::endl;
 		std::cout << "by: " << quote->getAuthor() << std::endl;
+		std::cout << std::endl;
+		stack.pop();
+
+		while (!stack.empty())
+		{
+			std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
+			std::cin >> input;
+
+			if (input == 1)
+			{
+				quote = stack.top();
+				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+				std::cout << "Category: " << quote->getCategory() << std::endl;
+				std::cout << "by: " << quote->getAuthor() << std::endl;
+				std::cout << std::endl;
+				stack.pop();
+			}
+			else if (input == 2)
+			{
+				exit(0);
+			}
+		}
 	}
-	
-	
 	return 0;
 }
