@@ -9,7 +9,7 @@ int main()
 {
 	AdjacencyList list;
 	list.insertData();
-	std::cout << "loading quote quotionet" << std::endl;
+	std::cout << "loading quote quotient..." << std::endl;
 	std::cout << std::endl;
 	// reads in graph via text file to avoid having to insert into graph each time program is run
 	list.readEdges("graph.txt");
