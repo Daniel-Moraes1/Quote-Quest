@@ -120,34 +120,34 @@ void AdjacencyList::readEdges(std::string in) {
     graph.close();
 }
 
-// BFS function that returns a stack of quotes found via BFS
-std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
-    std::stack<Quote*> stack;
-    std::queue<int> queue;
+// BFS function that returns a queue of quotes found via BFS
+std::queue<Quote*> AdjacencyList::BFS(Quote* source) {
+    std::queue<Quote*> return_queue;
+    std::queue<int> bfs_queue;
     std::unordered_set<int> visited;
     int source_index = source->getIndex();
 
-    queue.push(source_index);
+    bfs_queue.push(source_index);
     visited.insert(source_index);
-    while(!queue.empty()) {
-        int cur = queue.front();
-        queue.pop();
+    while(!bfs_queue.empty()) {
+        int cur = bfs_queue.front();
+        bfs_queue.pop();
         for (auto it = adjacency_list[cur].begin(); it != adjacency_list[cur].end(); it++) {
             if (visited.count(*it) == 0) {
-                queue.push(*it);
-                stack.push(quotes[*it]);
+                bfs_queue.push(*it);
+                return_queue.push(quotes[*it]);
                 visited.insert(*it);
             }
         }
     }
-    return stack;
+    return return_queue;
 }
 
-// DFS function that returns a stack of quotes found via DFS
-std::stack<Quote*> AdjacencyList::DFS(Quote* source) {
+// DFS function that returns a queue of quotes found via DFS
+std::queue<Quote*> AdjacencyList::DFS(Quote* source) {
     std::unordered_set<int> visited;
     std::stack<int> dfs_stack;
-    std::stack<Quote*> return_stack;
+    std::queue<Quote*> queue;
     int source_index = source->getIndex();
     
     dfs_stack.push(source_index);
@@ -159,12 +159,12 @@ std::stack<Quote*> AdjacencyList::DFS(Quote* source) {
         {
             if(visited.count(*it) == 0) {
                 dfs_stack.push(*it);
-                return_stack.push(quotes[*it]);
+                queue.push(quotes[*it]);
                 visited.insert(*it);
             }
         }
     }
-    return return_stack;
+    return queue;
 }
 
 // generates a quote given a sentiment and category

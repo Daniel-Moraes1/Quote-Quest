@@ -18,8 +18,8 @@ public:
     void insertData();
     void generateEdges(); // Create graph manually (SLOW)
     void readEdges(std::string in); // Read graph from file
-    std::stack<Quote*> BFS(Quote* source);
-    std::stack<Quote*> DFS(Quote* source);
+    std::queue<Quote*> BFS(Quote* source);
+    std::queue<Quote*> DFS(Quote* source);
 
     //Search through quotes and find the one most similar to user-inputted data
     Quote* generateQuote(float sentiment, std::string category, int length = 100);

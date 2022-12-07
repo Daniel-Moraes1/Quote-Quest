@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include "Quote.h"
-#include <stack>
+#include<queue>
 #include "AdjacencyList.h"
 #include <chrono>
 
@@ -110,12 +110,12 @@ int main()
 			std::cout << "----------------------------------------------" << std::endl;
 			std::cin >> input;
 
-			std::stack<Quote*> stack;
+			std::queue<Quote*> queue;
 			if (input == 1)
 			{
 				// set start to the current time DFS starts to run
 				auto start = std::chrono::high_resolution_clock::now();
-				stack = list.BFS(quote);
+				queue = list.BFS(quote);
 				// sets stop to the current time DFS ends
 				auto stop = std::chrono::high_resolution_clock::now();
 				// calculates the duration of the DFS method
@@ -124,7 +124,7 @@ int main()
 				std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
 				std::cout << std::endl;
 				std::cout << "----------------------------------------------" << std::endl;
-				quote = stack.top();
+				quote = queue.front();
 				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 				std::cout << "Category: " << quote->getCategory() << std::endl;
@@ -132,10 +132,10 @@ int main()
 				std::cout << "Author: " << quote->getAuthor() << std::endl;
 				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << std::endl;
-				stack.pop();
+				queue.pop();
 
-				// while loop to run throughout the whole stack containing our quotes stored via BFS
-				while (!stack.empty())
+				// while loop to run throughout the whole queue containing our quotes stored via BFS
+				while (!queue.empty())
 				{
 					std::cout << "----------------------------------------------" << std::endl;
 					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
@@ -146,7 +146,7 @@ int main()
 
 					if (input == 1)
 					{
-						quote = stack.top();
+						quote = queue.front();
 						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 						std::cout << "Category: " << quote->getCategory() << std::endl;
@@ -154,7 +154,7 @@ int main()
 						std::cout << "Author: " << quote->getAuthor() << std::endl;
 						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << std::endl;
-						stack.pop();
+						queue.pop();
 					}
 					else if (input == 2)
 					{
@@ -170,7 +170,7 @@ int main()
 			{
 				// set start to the current time DFS starts to run
 				auto start = std::chrono::high_resolution_clock::now();
-				stack = list.DFS(quote);
+				queue = list.DFS(quote);
 				// sets stop to the current time DFS ends
 				auto stop = std::chrono::high_resolution_clock::now();
 				// calculates the duration of the DFS method
@@ -179,7 +179,7 @@ int main()
 				std::cout << "The time it took for a DFS to complete was " << duration.count() << " microseconds" << std::endl;
 				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << std::endl;
-				quote = stack.top();
+				quote = queue.front();
 				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 				std::cout << "Category: " << quote->getCategory() << std::endl;
@@ -187,10 +187,10 @@ int main()
 				std::cout << "Author: " << quote->getAuthor() << std::endl;
 				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << std::endl;
-				stack.pop();
+				queue.pop();
 
-				// while loop to run throughout the whole stack containing our quotes stored via DFS
-				while (!stack.empty())
+				// while loop to run throughout the whole queue containing our quotes stored via DFS
+				while (!queue.empty())
 				{
 					std::cout << "----------------------------------------------" << std::endl;
 					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
@@ -201,7 +201,7 @@ int main()
 					
 					if (input == 1)
 					{
-						quote = stack.top();
+						quote = queue.front();
 						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 						std::cout << "Category: " << quote->getCategory() << std::endl;
@@ -209,7 +209,7 @@ int main()
 						std::cout << "Author: " << quote->getAuthor() << std::endl;
 						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << std::endl;
-						stack.pop();
+						queue.pop();
 					}
 					else if (input == 2)
 					{
