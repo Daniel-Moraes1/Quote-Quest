@@ -9,31 +9,36 @@ int main()
 {
 	AdjacencyList list;
 	list.insertData();
-	std::cout << "Loading quote quotient..." << std::endl;
+	std::cout << "loading quote quotionet" << std::endl;
 	std::cout << std::endl;
 	list.readEdges("graph.txt");
 	int input;
 	float sentimentVal;
 	std::string category;
 
-	std::cout << "Welcome to \"Quote Quest\"!" << std::endl;
-	std::cout << "----------------------------------------------!" << std::endl;
-	std::cout << "Please enter a number for your desired initial category:" << std::endl;
-	std::cout << "1) Love" << std::endl;
-	std::cout << "2) Life" << std::endl;
-	std::cout << "3) Inspiration" << std::endl;
-	std::cout << "4) Philosophy" << std::endl;
-	std::cout << "5) Humor" << std::endl;
-	std::cout << "6) God" << std::endl;
-	std::cout << "7) Truth" << std::endl;
-	std::cout << "8) Wisdom" << std::endl;
-	std::cout << "9) Happiness" << std::endl;
-	std::cout << "10) Hope" << std::endl;
-	std::cout << "11) Hate" << std::endl;
-	std::cin >> input;
+	while (true)
+	{
+		std::cout << "Welcome to \"Quote Quest\"!" << std::endl;
+		std::cout << "----------------------------------------------!" << std::endl;
+		std::cout << "Please enter a number for your desired initial category:" << std::endl;
+		std::cout << "1) Love" << std::endl;
+		std::cout << "2) Life" << std::endl;
+		std::cout << "3) Inspiration" << std::endl;
+		std::cout << "4) Philosophy" << std::endl;
+		std::cout << "5) Humor" << std::endl;
+		std::cout << "6) God" << std::endl;
+		std::cout << "7) Truth" << std::endl;
+		std::cout << "8) Wisdom" << std::endl;
+		std::cout << "9) Happiness" << std::endl;
+		std::cout << "10) Hope" << std::endl;
+		std::cout << "11) Hate" << std::endl;
+		std::cout << "Enter 0 to exit the program" << std::endl;
+		std::cin >> input;
 
-	
-	switch (input) {
+
+		switch (input) {
+		case 0:
+			exit(0);
 		case 1:
 			category = "love";
 			break;
@@ -67,89 +72,102 @@ int main()
 		case 11:
 			category = "hate";
 			break;
-	}
-	std::cout << "Please enter a desired sentiment value (between -1 and 1):" << std::endl;
-	std::cin >> sentimentVal;
-
-	Quote* quote = list.generateQuote(sentimentVal, category);
-	std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
-	std::cout << "Category: " << quote->getCategory() << std::endl;
-	std::cout << "by: " << quote->getAuthor() << std::endl;
-	std::cout << std::endl;
-
-	std::cout << "Please enter preferred method of related quote generation (enter 1 or 2)" << std::endl;
-	std::cout << "1) BFS" << std::endl;
-	std::cout << "2) DFS" << std::endl;
-	std::cin >> input;
-
-	std::stack<Quote*> stack;
-	if (input == 1)
-	{
-		auto start = std::chrono::high_resolution_clock::now();
-		stack = list.BFS(quote);
-		auto stop = std::chrono::high_resolution_clock::now();
-		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-		std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
-		std::cout << std::endl;
-		quote = stack.top();
-		std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
-		std::cout << "Category: " << quote->getCategory() << std::endl;
-		std::cout << "by: " << quote->getAuthor() << std::endl;
-		std::cout << std::endl;
-		stack.pop();
-
-		while (!stack.empty())
-		{
-			std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
-			std::cin >> input;
-
-			if (input == 1)
-			{
-				quote = stack.top();
-				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
-				std::cout << "Category: " << quote->getCategory() << std::endl;
-				std::cout << "by: " << quote->getAuthor() << std::endl;
-				std::cout << std::endl;
-				stack.pop();
-			}
-			else if (input == 2)
-			{
-				exit(0);
-			}
 		}
-	}
-	else if (input == 2)
-	{
-		auto start = std::chrono::high_resolution_clock::now();
-		stack = list.DFS(quote);
-		auto stop = std::chrono::high_resolution_clock::now();
-		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-		std::cout << "The time it took for a DFS to complete was " << duration.count() << " microseconds" << std::endl;
-		std::cout << std::endl;
-		quote = stack.top();
+		std::cout << "Please enter a desired sentiment value (between -1 and 1):" << std::endl;
+		std::cin >> sentimentVal;
+
+		Quote* quote = list.generateQuote(sentimentVal, category);
 		std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 		std::cout << "Category: " << quote->getCategory() << std::endl;
 		std::cout << "by: " << quote->getAuthor() << std::endl;
 		std::cout << std::endl;
-		stack.pop();
 
-		while (!stack.empty())
+		std::cout << "Would you like to generate another quote? (enter 1 or 2)" << std::endl;
+		std::cout << "1) Yes" << std::endl;
+		std::cout << "2) No" << std::endl;
+		std::cin >> input;
+
+		if (input == 1)
 		{
-			std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
+			continue;
+		}
+		else
+		{
+			std::cout << "Please enter preferred method of related quote generation or if you want to get another quote (enter 1 or 2)" << std::endl;
+			std::cout << "1) BFS" << std::endl;
+			std::cout << "2) DFS" << std::endl;
 			std::cin >> input;
 
+			std::stack<Quote*> stack;
 			if (input == 1)
 			{
+				auto start = std::chrono::high_resolution_clock::now();
+				stack = list.BFS(quote);
+				auto stop = std::chrono::high_resolution_clock::now();
+				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+				std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
+				std::cout << std::endl;
 				quote = stack.top();
 				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 				std::cout << "Category: " << quote->getCategory() << std::endl;
 				std::cout << "by: " << quote->getAuthor() << std::endl;
 				std::cout << std::endl;
 				stack.pop();
+
+				while (!stack.empty())
+				{
+					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
+					std::cin >> input;
+
+					if (input == 1)
+					{
+						quote = stack.top();
+						std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+						std::cout << "Category: " << quote->getCategory() << std::endl;
+						std::cout << "by: " << quote->getAuthor() << std::endl;
+						std::cout << std::endl;
+						stack.pop();
+					}
+					else if (input == 2)
+					{
+						exit(0);
+					}
+				}
 			}
 			else if (input == 2)
 			{
-				exit(0);
+				auto start = std::chrono::high_resolution_clock::now();
+				stack = list.DFS(quote);
+				auto stop = std::chrono::high_resolution_clock::now();
+				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+				std::cout << "The time it took for a DFS to complete was " << duration.count() << " microseconds" << std::endl;
+				std::cout << std::endl;
+				quote = stack.top();
+				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+				std::cout << "Category: " << quote->getCategory() << std::endl;
+				std::cout << "by: " << quote->getAuthor() << std::endl;
+				std::cout << std::endl;
+				stack.pop();
+
+				while (!stack.empty())
+				{
+					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
+					std::cin >> input;
+
+					if (input == 1)
+					{
+						quote = stack.top();
+						std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
+						std::cout << "Category: " << quote->getCategory() << std::endl;
+						std::cout << "by: " << quote->getAuthor() << std::endl;
+						std::cout << std::endl;
+						stack.pop();
+					}
+					else if (input == 2)
+					{
+						exit(0);
+					}
+				}
 			}
 		}
 	}
