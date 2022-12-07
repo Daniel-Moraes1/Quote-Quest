@@ -122,8 +122,8 @@ int main()
 				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
-				std::cout << std::endl;
 				std::cout << "----------------------------------------------" << std::endl;
+				std::cout << std::endl;
 				quote = queue.front();
 				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
