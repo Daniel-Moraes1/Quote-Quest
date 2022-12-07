@@ -22,6 +22,6 @@ public:
     std::stack<Quote*> DFS(Quote* source);
 
     //Search through quotes and find the one most similar to user-inputted data
-    std::vector<std::string> generateQuote(float sentiment, std::string category, int length = 100);
+    Quote* generateQuote(float sentiment, std::string category, int length = 100);
 };
 

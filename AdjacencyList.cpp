@@ -5,12 +5,12 @@
 #include <set>
 #include <queue>
 
-#include<iostream> // Delete me
+#include<iostream> // To check progress when creating edges
 
 #include "AdjacencyList.h"
 
 AdjacencyList::AdjacencyList() {
-    similarity_factor = 0.005;
+    similarity_factor = 0.02;
 }
 
 
@@ -64,7 +64,6 @@ void AdjacencyList::insertData()
         }
     }
     // Create empty Adjacency List
-    std::cout<<quotes.size();
     adjacency_list = std::vector<std::unordered_set<int>> (quotes.size());
 }
 
@@ -125,7 +124,6 @@ void AdjacencyList::readEdges(std::string in) {
         }
     }
     graph.close();
-    std::cout<<std::endl<<adjacency_list[adjacency_list.size()-1].size();
 }
 
 std::stack<Quote*> AdjacencyList::BFS(Quote* source) {
@@ -160,6 +158,20 @@ std::stack<Quote*> AdjacencyList::DFS(Quote* source) {
         dfs_stack.pop();
     }
     return return_stack;
+}
+
+Quote* AdjacencyList::generateQuote(float sentiment, std::string category, int length) {
+    Quote tempQuote = Quote(sentiment, length, "", category, "", -1);
+    float min = 5; // Arbitrary value greater than possible from dataset
+    int min_index = 0;
+    for (int i=0; i<quotes.size(); i++) {
+        float val = tempQuote.calculateSimilarity(quotes[i]);
+        if (val < min) {
+            min = val;
+            min_index = i;
+        }
+    }
+    return quotes[min_index];
 }
 
 AdjacencyList::~AdjacencyList() {

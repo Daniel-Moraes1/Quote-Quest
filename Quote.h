@@ -22,6 +22,6 @@ public:
 	std::string getAuthor();
     int getIndex();
     float calculateSimilarity(Quote* q);
-    std::vector<std::string> getQuote(Quote* quote);
+    std::vector<std::string> getQuoteAttributes();
 	
 };

@@ -1,5 +1,6 @@
 #include "Quote.h"
 #include <string>
+#include <iostream>
 
 Quote::Quote()
 {
@@ -56,20 +57,21 @@ float Quote::calculateSimilarity(Quote *q2) {
     if (q2 == this)
         return 0.0;
 
-    float similarity(0);
+    float similarity = 0.0;
+
 
     // Sentiment value
-    similarity += abs(this->getSentimentVal() - q2->getSentimentVal());
-
+    similarity += std::max(this->getSentimentVal(), q2->getSentimentVal()) - std::min(this->getSentimentVal(), q2->getSentimentVal());
     //Category
     if (this->getCategory() != q2->getCategory()) {
-        similarity += 0.0048; // Must be low enough to jump between categories if sentiments are close enough
+        similarity += 0.0075; // Must be low enough to jump between categories if sentiments are close enough
     }
 
     //Length
     float l1(this->getLength()); float l2(q2->getLength());
-    float length_reduction_factor = 10.0; // Chosen to ensure similarity is not too heavily impacted by length
+    float length_reduction_factor = 50.0; // Chosen to ensure similarity is not too heavily impacted by length
     similarity += ((std::max(l1, l2) - std::min(l1, l2))/(std::max(l1, l2)*length_reduction_factor));
+
 
     return similarity;
 }
@@ -82,11 +84,11 @@ float Quote::calculateSimilarity(Quote *q2) {
  * [3] SENTIMENT (-1, 1)
  * [4] LENGTH (in characters)
 */
-std::vector<std::string> Quote::getQuote(Quote* quote) {
-    std::vector<std::string> output = {quote->getQuote(),
-                                       quote->getAuthor(),
-                                       quote->getCategory(),
-                                       std::to_string(quote->getSentimentVal()),
-                                       std::to_string(quote->getLength())};
+std::vector<std::string> Quote::getQuoteAttributes() {
+    std::vector<std::string> output = {this->getQuote(),
+                                       this->getAuthor(),
+                                       this->getCategory(),
+                                       std::to_string(this->getSentimentVal()),
+                                       std::to_string(this->getLength())};
     return output;
 }
