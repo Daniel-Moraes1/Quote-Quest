@@ -21,7 +21,7 @@ int main()
 	{
 		// Creates user interface
 		std::cout << "Welcome to \"Quote Quest\"!" << std::endl;
-		std::cout << "----------------------------------------------!" << std::endl;
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cout << "Please enter a number for your desired initial category:" << std::endl;
 		std::cout << "1) Love" << std::endl;
 		std::cout << "2) Life" << std::endl;
@@ -35,6 +35,7 @@ int main()
 		std::cout << "10) Hope" << std::endl;
 		std::cout << "11) Hate" << std::endl;
 		std::cout << "Enter 0 to exit the program" << std::endl;
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cin >> input;
 
 
@@ -75,18 +76,25 @@ int main()
 			category = "hate";
 			break;
 		}
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cout << "Please enter a desired sentiment value (between -1 and 1):" << std::endl;
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cin >> sentimentVal;
 
 		Quote* quote = list.generateQuote(sentimentVal, category);
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 		std::cout << "Category: " << quote->getCategory() << std::endl;
-		std::cout << "by: " << quote->getAuthor() << std::endl;
+		std::cout << "Sentiment Value: " << quote->getSentimentVal() << std::endl;
+		std::cout << "Author: " << quote->getAuthor() << std::endl;
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cout << std::endl;
 
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cout << "Would you like to generate another quote? (enter 1 or 2)" << std::endl;
 		std::cout << "1) Yes" << std::endl;
 		std::cout << "2) No" << std::endl;
+		std::cout << "----------------------------------------------" << std::endl;
 		std::cin >> input;
 
 		if (input == 1)
@@ -95,9 +103,11 @@ int main()
 		}
 		else
 		{
+			std::cout << "----------------------------------------------" << std::endl;
 			std::cout << "Please enter preferred method of related quote generation or if you want to get another quote (enter 1 or 2)" << std::endl;
 			std::cout << "1) BFS" << std::endl;
 			std::cout << "2) DFS" << std::endl;
+			std::cout << "----------------------------------------------" << std::endl;
 			std::cin >> input;
 
 			std::stack<Quote*> stack;
@@ -110,31 +120,47 @@ int main()
 				auto stop = std::chrono::high_resolution_clock::now();
 				// calculates the duration of the DFS method
 				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "The time it took for a BFS to complete was " << duration.count() << " microseconds" << std::endl;
 				std::cout << std::endl;
+				std::cout << "----------------------------------------------" << std::endl;
 				quote = stack.top();
+				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 				std::cout << "Category: " << quote->getCategory() << std::endl;
-				std::cout << "by: " << quote->getAuthor() << std::endl;
+				std::cout << "Sentiment Value: " << quote->getSentimentVal() << std::endl;
+				std::cout << "Author: " << quote->getAuthor() << std::endl;
+				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << std::endl;
 				stack.pop();
 
 				// while loop to run throughout the whole stack containing our quotes stored via BFS
 				while (!stack.empty())
 				{
+					std::cout << "----------------------------------------------" << std::endl;
 					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
+					std::cout << "1) Yes" << std::endl;
+					std::cout << "2) No" << std::endl;
+					std::cout << "----------------------------------------------" << std::endl;
 					std::cin >> input;
 
 					if (input == 1)
 					{
 						quote = stack.top();
+						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 						std::cout << "Category: " << quote->getCategory() << std::endl;
-						std::cout << "by: " << quote->getAuthor() << std::endl;
+						std::cout << "Sentiment Value: " << quote->getSentimentVal() << std::endl;
+						std::cout << "Author: " << quote->getAuthor() << std::endl;
+						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << std::endl;
 						stack.pop();
 					}
 					else if (input == 2)
+					{
+						break;;
+					}
+					else if (input == 3)
 					{
 						exit(0);
 					}
@@ -143,33 +169,45 @@ int main()
 			else if (input == 2)
 			{
 				// set start to the current time DFS starts to run
-				auto start = std::chrono::high_resolution_clock::now(); 
+				auto start = std::chrono::high_resolution_clock::now();
 				stack = list.DFS(quote);
 				// sets stop to the current time DFS ends
-				auto stop = std::chrono::high_resolution_clock::now(); 
+				auto stop = std::chrono::high_resolution_clock::now();
 				// calculates the duration of the DFS method
-				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start); 
+				auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "The time it took for a DFS to complete was " << duration.count() << " microseconds" << std::endl;
+				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << std::endl;
 				quote = stack.top();
+				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 				std::cout << "Category: " << quote->getCategory() << std::endl;
-				std::cout << "by: " << quote->getAuthor() << std::endl;
+				std::cout << "Sentiment Value: " << quote->getSentimentVal() << std::endl;
+				std::cout << "Author: " << quote->getAuthor() << std::endl;
+				std::cout << "----------------------------------------------" << std::endl;
 				std::cout << std::endl;
 				stack.pop();
 
 				// while loop to run throughout the whole stack containing our quotes stored via DFS
 				while (!stack.empty())
 				{
+					std::cout << "----------------------------------------------" << std::endl;
 					std::cout << "Would you like to view the next quote or exit? (enter 1 or 2)" << std::endl;
+					std::cout << "1) Yes" << std::endl;
+					std::cout << "2) No" << std::endl;
+					std::cout << "----------------------------------------------" << std::endl;
 					std::cin >> input;
-
+					
 					if (input == 1)
 					{
 						quote = stack.top();
+						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << "Your quote is: " << "\"" << quote->getQuote() << "\"" << std::endl;
 						std::cout << "Category: " << quote->getCategory() << std::endl;
-						std::cout << "by: " << quote->getAuthor() << std::endl;
+						std::cout << "Sentiment Value: " << quote->getSentimentVal() << std::endl;
+						std::cout << "Author: " << quote->getAuthor() << std::endl;
+						std::cout << "----------------------------------------------" << std::endl;
 						std::cout << std::endl;
 						stack.pop();
 					}
