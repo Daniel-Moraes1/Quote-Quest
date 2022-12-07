@@ -1,6 +1,9 @@
 HOW TO USE:
+
 Download all cpp files (Python scripts not necessary)
+
 Download quote csv and preprocesses graph txt from our drive: https://drive.google.com/drive/folders/1VieJropXMiz7Ixu0AVM4i17FsOvlw2s1?usp=sharing
+
 Compile, generate quotes, and find similar quotes while exploring Breadth First and Depth First Searches!
 
 
